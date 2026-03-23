@@ -1,36 +1,34 @@
-import serial # pyserial: allows Python talk to COM ports (Arduino)
-import asyncio # built-in: event loops, sleeps
-import websockets # interactive applications. Python can send commands and interact with the arduino
+import requests # Helps make HTTP requests to the ESP sensor (GET /sensor)
+import asyncio # keeps track of all tasks simanteously
+import websockets #used to create websocket server to send data to the website
 
-# Added error handling because the script crashed when COM6 was unplugged
-try:
-    ser = serial.Serial('COM6', 115200, timeout=1)
-    print("Connected to Arduino on COM6")
-except Exception as e:
-    # if opening port fails (wrong port, permission issue).
-    print("ERROR: Arduino not found. Check your cable!")
-    print(e)
-
+# This function bridges data from the ESP (HTTP) to the browser (WebSocket)
 async def handler(websocket):
     while True:
         try:
-            # Added check to see if serial exists before reading
+            # Pull one reading from my sensor endpoint (served by the ESP)
+            RES = requests.get("http://192.168.4.1/sensor")
 
-            if 'ser' in locals() and ser.in_waiting > 0:
-                # Read a line from serial, decode bytes to text, and strip newline
-                data = ser.readline().decode('utf-8').strip()
-                # send line to connected websocket client
-                await websocket.send(data)
-        except:
-            pass
-        await asyncio.sleep(0.05) 
+            if RES.status_code == 200:
+                data = RES.text            # raw sensor value as text
+                print(f"Sensor: {data}")   # log it so I can see the stream
+                await websocket.send(data) # push it to the web client
+            else:
+                # If the ESP replies but not OK, tell me the status code
+                print(f"Server responds with status code: {RES.status_code}")
 
-# start a websocket server at localhost:8031
-# run forvever
+        except requests.ConnectionError:
+            # If the ESP is down or Wi‑Fi hiccups
+            print("Connection time out")
+
+        # Small delay so I don't hammer the ESP (and to have control)
+        await asyncio.sleep(0.01)
+
+# Start a WebSocket server on localhost:8081 and keep it running forever
 async def main():
+    print("Bridge running on wifi... Refresh your website!")
     async with websockets.serve(handler, "localhost", 8081):
-        await asyncio.Future()
-
+        await asyncio.Future()  # never resolves → keeps server alive
 
 if __name__ == "__main__":
     asyncio.run(main())
