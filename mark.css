@@ -1,3 +1,4 @@
+/* Basic page styling */
 :root {
     color-scheme: dark;
     --l-color: #00f2ff;
@@ -5,42 +6,46 @@
 }
 
 body {
-    background-color: #080808;
-    color: var(--l-color);
+    background-color: #080808;   
+    color: #00f2ff;            
     font-family: 'Segoe UI', sans-serif;
-    margin: 0;
+    margin: 0;                   
 }
- 
+
 #status {
     margin-top: 70px;
 }
 
+/* Top navigation bar at the very top of the page */
 .nav {
-    background: #111;
+    background: #111;           
     padding: 15px;
-    display: flex;
+    display: flex;               
     justify-content: space-around;
     border-bottom: 2px solid #333;
 }
- 
+
+/* Layout that holds both muscle boxes */
 .dashboard {
-    display: flex;
+    display: flex;               /* place left and right boxes side-by-side */
     justify-content: center;
-    gap: 30px;
+    gap: 30px;                   /* spacing between the two boxes */
     padding: 30px;
 }
- 
+
+/* Individual container for each muscle section */
 .muscle-box {
-    background: #121212;
-    border: 1px solid #333;
-    border-radius: 20px;
-    padding: 20px 20px 135px 20px;
-    width: 43%;
+    background: #121212;        
+    border: 1px solid #333; 
+    border-radius: 20px;         
+    padding: 20px 20px 150px 20px; 
+    width: 43%;                  
 }
- 
+
+/* Large number showing the live EMG value */
 .num-display {
-    font-size: 4rem;
-    font-weight: 800;
+    font-size: 4rem;           
+    font-weight: 800;            /* bold for emphasis */
 }
 
 #r-val{
@@ -50,3 +55,4 @@ body {
 #right-value{
     color: var(--r-color);
 }
+
