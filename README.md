@@ -19,11 +19,15 @@ A wearable EMG (electromyography) armband that streams live muscle data wireless
 4. **Dashboard** — HTML/CSS/JS frontend (`mark.html`, `mark.js`, `chart.js`) renders live muscle activity charts with high-contrast visuals for accessibility
 
 ## 🗂️ File Structure
-# bridge.py              # Python WebSocket server — bridges ESP32 → browser
-# bridge_without_wifi.py # USB/serial fallback version
-# mark.html              # Main dashboard UI
-# mark.css               # High-contrast styling for accessibility
-# mark.js                # WebSocket client + real-time chart updates
+```
+bridge.py               # Python WebSocket server — bridges ESP32 → browser
+bridge_without_wifi.py  # USB/serial fallback version
+mark.html               # Main dashboard UI
+mark.css                # High-contrast styling for accessibility
+mark.js                 # WebSocket client + real-time chart updates
+chart.js                # Chart rendering logic
+mark_2charts.js         # Dual-arm tracking version
+```
 
 ## 🛠️ Tech Stack
 
